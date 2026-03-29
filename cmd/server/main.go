@@ -1,38 +1,37 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+	"context"
+	"log"
 	"net/http"
+	"os"
 
-	"github.com/erielC/orbihub-registry/internal/model"
+	"github.com/erielC/orbihub-registry/internal/handler"
+	"github.com/erielC/orbihub-registry/internal/store"
+	"github.com/jackc/pgx/v5"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	fmt.Println("Hello World")
-	apps := model.GetApps()
-	// fmt.Println(apps)
 
-	jsonBytes, err := json.Marshal(apps)
+	if err := godotenv.Load(); err != nil {
+		log.Printf("Warning: .env file not found: %v", err)
+	}
+	log.Printf(".env file is found")
+
+	conn, err := pgx.Connect(context.Background(), os.Getenv("DATABASE_URL"))
 	if err != nil {
-		panic(err)
+		log.Fatalf("Failed to connect to the database: %v", err)
 	}
+	defer conn.Close(context.Background())
 
-	fmt.Println(string(jsonBytes))
-	
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(apps)
-	})
+	appsStore := store.NewAppsStore(conn)
+	appsHandler := handler.NewAppsHandler(appsStore)
 
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Status: Ok!")
-	})
+	http.HandleFunc("GET /apps", appsHandler.GetApps)
 
-	fmt.Println("Starting server at http://localhost:8000")
+	log.Println("Starting server at http://localhost:8000")
 	if err := http.ListenAndServe(":8000", nil); err != nil {
-		fmt.Println("Error starting server:", err)
+		log.Fatal("Error starting server:", err)
 	}
-
-	fmt.Println()
 }

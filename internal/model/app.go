@@ -3,34 +3,18 @@ package model
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 type App struct {
-	ID          string `json:"id"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	Version     string `json:"version"`
-	Repo        string `json:"repo"`
-	Author      string `json:"author"`
-	Image       string `json:"image"`
-	CreatedAt   string `json:"created_at"`
-}
-
-var Apps = []App{
-	{
-		ID:          "telemetry-viewer",
-		Name:        "Orbiview",
-		Description: "Real-time rocket telemetry monitoring",
-		Version:     "1.0.0",
-		Repo:        "https://github.com/FIU-SEDS/Orbiview",
-		Author:      "Tomas Mejia",
-		Image:       "dashboard_logo.png",
-		CreatedAt:   "2026",
-	},
-}
-
-func GetApps() []App {
-	return Apps
+	ID          string    `json:"id"`
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Version     string    `json:"version"`
+	Repo        string    `json:"repo"`
+	Author      string    `json:"author"`
+	Image       string    `json:"image"`
+	CreatedAt   time.Time `json:"created_at"`
 }
 
 func PrintAppInfo(apps []App, w http.ResponseWriter) {
