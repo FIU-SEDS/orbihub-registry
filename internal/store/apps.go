@@ -44,3 +44,21 @@ func (as AppsStore) GetApps() ([]model.App, error) {
 
 	return appsList, nil
 }
+
+func (as AppsStore) GetAppByID(id string) (model.App, error) {
+	var app model.App
+	err := as.Conn.QueryRow(context.Background(), "SELECT id, name, description, version, repo, author, image, created_at FROM apps WHERE id = $1", id).Scan(
+		&app.ID,
+		&app.Name,
+		&app.Description,
+		&app.Version,
+		&app.Repo,
+		&app.Author,
+		&app.Image,
+		&app.CreatedAt,
+	)
+	if err != nil {
+		return app, err
+	}
+	return app, nil
+}

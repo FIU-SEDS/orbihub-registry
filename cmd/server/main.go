@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -29,6 +30,13 @@ func main() {
 	appsHandler := handler.NewAppsHandler(appsStore)
 
 	http.HandleFunc("GET /apps", appsHandler.GetApps)
+	http.HandleFunc("GET /apps/{id}", appsHandler.GetAppByID)
+
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Status: Ok!")
+	})
+
+	// app_test := model.App{ID: "test", Name: "hello", Description: "test", Version: "1.0.0", Repo: "github", Author: "eriel", Image: "test", CreatedAt: time.Now()}
 
 	log.Println("Starting server at http://localhost:8000")
 	if err := http.ListenAndServe(":8000", nil); err != nil {
