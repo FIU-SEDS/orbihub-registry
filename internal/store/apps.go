@@ -62,3 +62,9 @@ func (as AppsStore) GetAppByID(id string) (model.App, error) {
 	}
 	return app, nil
 }
+
+func (as AppsStore) CreateApp(app model.App) error {
+	_, err := as.Conn.Exec(context.Background(), "INSERT INTO apps (id, name, description, version, repo, author, image, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", app.ID, app.Name, app.Description, app.Version, app.Repo, app.Author, app.Image, app.CreatedAt)
+
+	return err
+}

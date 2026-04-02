@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/erielC/orbihub-registry/internal/model"
 	"github.com/erielC/orbihub-registry/internal/store"
 	"github.com/jackc/pgx/v5"
 )
@@ -42,4 +43,19 @@ func (ah AppsHandler) GetAppByID(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(app)
+}
+
+func (ah AppsHandler) CreateApp(w http.ResponseWriter, r *http.Request) {
+	var app model.App
+	if err := json.NewDecoder(r.Body).Decode(&app); err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	if err := ah.Apps.CreateApp(app); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusCreated)
+	return
+
 }

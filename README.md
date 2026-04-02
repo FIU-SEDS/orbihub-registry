@@ -30,3 +30,14 @@ orbihub-registry/
   - `store` — knows about the database, knows nothing about HTTP
   - `model` — plain structs, no logic, imported by both handler and store
 - `db/` — keeps your SQL files organized, separate from Go code
+
+### How to add new app
+
+A `POST` request has already been setup so you can update the registry for a new application
+
+```bash
+curl -X POST http://localhost:8000/apps \
+  -H "Content-Type: application/json" \
+  -d '{"id":"test-app","name":"Test App","description":"A test application","version":"1.0.0","repo":"https://github.com/test/test-app","author":"Test","image":"test.png"}'
+```
+

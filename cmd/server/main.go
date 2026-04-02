@@ -31,6 +31,7 @@ func main() {
 
 	http.HandleFunc("GET /apps", appsHandler.GetApps)
 	http.HandleFunc("GET /apps/{id}", appsHandler.GetAppByID)
+	http.HandleFunc("POST /apps", appsHandler.CreateApp)
 
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Status: Ok!")
