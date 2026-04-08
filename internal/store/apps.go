@@ -68,3 +68,33 @@ func (as AppsStore) CreateApp(app model.App) error {
 
 	return err
 }
+
+func (as AppsStore) UpdateApp(id string, app model.App) (model.App, error) {
+	var updated model.App
+	err := as.Conn.QueryRow(
+		context.Background(),
+		"UPDATE apps SET name=$1, description=$2, version=$3, repo=$4, author=$5, image=$6 WHERE id=$7 RETURNING id, name, description, version, repo, author, image, created_at",
+		app.Name, app.Description, app.Version, app.Repo, app.Author, app.Image, id,
+	).Scan(
+		&updated.ID,
+		&updated.Name,
+		&updated.Description,
+		&updated.Version,
+		&updated.Repo,
+		&updated.Author,
+		&updated.Image,
+		&updated.CreatedAt,
+	)
+	return updated, err
+}
+
+func (as AppsStore) DeleteApp(id string) error {
+	tag, err := as.Conn.Exec(context.Background(), "DELETE FROM apps WHERE id=$1", id)
+	if err != nil {
+		return err
+	}
+	if tag.RowsAffected() == 0 {
+		return pgx.ErrNoRows
+	}
+	return nil
+}
