@@ -1,6 +1,6 @@
 module github.com/erielC/orbihub-registry
 
-go 1.24.2
+go 1.24
 
 require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
