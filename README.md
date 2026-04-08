@@ -2,6 +2,8 @@
 
 > REST API and registry service for OrbiHub written in Go — manages app listings, metadata, and versioning for the rocketry software marketplace.
 
+**Live API:** https://orbihub-registry.onrender.com
+
 ## Overview
 
 `orbihub-registry` is the backend registry service powering [OrbiHub](https://github.com/FIU-SEDS/OrbiHub), a desktop marketplace for rocketry software. It exposes a RESTful API backed by a PostgreSQL database (Supabase) and is designed to replace hardcoded app listings with a live, queryable registry.
@@ -20,7 +22,7 @@ Write endpoints (`POST`, `PUT`, `DELETE`) require an `Authorization: Bearer <API
 
 ## Stack
 
-- **Language** — Go 1.25
+- **Language** — Go 1.23
 - **Database** — PostgreSQL via Supabase
 - **Driver** — `pgx/v5`
 - **Deployment** — Render
@@ -95,22 +97,26 @@ The server starts at `http://localhost:8000`.
 
 ## Usage
 
+### Live API
+
+The registry is live at `https://orbihub-registry.onrender.com`. Read endpoints are public.
+
 ### List all apps
 
 ```bash
-curl http://localhost:8000/apps
+curl https://orbihub-registry.onrender.com/apps
 ```
 
 ### Get app by ID
 
 ```bash
-curl http://localhost:8000/apps/telemetry-viewer
+curl https://orbihub-registry.onrender.com/apps/telemetry-viewer
 ```
 
 ### Publish a new app
 
 ```bash
-curl -X POST http://localhost:8000/apps \
+curl -X POST https://orbihub-registry.onrender.com/apps \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer your-api-key" \
   -d '{
@@ -127,7 +133,7 @@ curl -X POST http://localhost:8000/apps \
 ### Update an app
 
 ```bash
-curl -X PUT http://localhost:8000/apps/my-app \
+curl -X PUT https://orbihub-registry.onrender.com/apps/my-app \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer your-api-key" \
   -d '{"version": "1.1.0"}'
@@ -136,7 +142,7 @@ curl -X PUT http://localhost:8000/apps/my-app \
 ### Delete an app
 
 ```bash
-curl -X DELETE http://localhost:8000/apps/my-app \
+curl -X DELETE https://orbihub-registry.onrender.com/apps/my-app \
   -H "Authorization: Bearer your-api-key"
 ```
 
