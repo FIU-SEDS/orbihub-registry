@@ -2,7 +2,14 @@
 
 > REST API and registry service for OrbiHub written in Go — manages app listings, metadata, and versioning for the rocketry software marketplace.
 
+<div align="center">
+![Go](https://github.com/erielC/orbihub-registry/actions/workflows/go.yml/badge.svg)
+![Render](https://img.shields.io/badge/deployed-render-46E3B7?logo=render)
+![API Status](https://img.shields.io/website?url=https%3A%2F%2Forbihub-registry.onrender.com%2Fapps&label=API)
+
 **Live API:** https://orbihub-registry.onrender.com/apps
+</div>
+
 
 ## Overview
 
